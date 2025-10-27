@@ -1,0 +1,25 @@
+/* Style utama kalkulator */
+input {
+  width: 100%;
+  height: 50px;
+  margin-bottom: 10px;
+  text-align: right;
+  font-size: 24px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+
+button {
+  height: 50px;
+  font-size: 20px;
+  border-radius: 10px;
+  border: none;
+  background: #ececec;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #ddd;
+}
