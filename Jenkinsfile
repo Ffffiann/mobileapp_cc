@@ -1,9 +1,7 @@
 pipeline {
   agent any
   environment {
-  // ubah 'youruser/simple-app' dengan nama kamu dan repo proyek kamu
-    IMAGE_NAME = 'alfian22/mobileapp_cc'
-  // ubah 'dockerhub-credentials' dengan credential yang sudah kamu buat 
+    IMAGE_NAME = 'alfian22/mobileapp_cc' 
     REGISTRY_CREDENTIALS = 'dockerhub-credentials'
   }
   stages {
@@ -40,4 +38,5 @@ pipeline {
   }
 }
 }
+
 
