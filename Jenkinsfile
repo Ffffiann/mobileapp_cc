@@ -1,47 +1,36 @@
 pipeline {
-    agent any
-
-    environment {
-        IMAGE_NAME = "mobile-calculator"
-        CONTAINER_NAME = "calcapp"
-        PORT = "3000"
+  agent any
+  environment {
+  // ubah 'youruser/simple-app' dengan nama kamu dan repo proyek kamu
+    IMAGE_NAME = 'alfian22/mobileapp_cc'
+  // ubah 'dockerhub-credentials' dengan credential yang sudah kamu buat 
+    REGISTRY_CREDENTIALS = 'dockerhub-credentials'
+  }
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
     }
-
-    stages {
-        stage('Checkout') {
-            steps {
-                // Ambil code dari git repository
-                git 'https://github.com/Ffffiann/mobileapp_cc.git'
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    sh "docker build -t ${IMAGE_NAME} ."
-                }
-            }
-        }
-
-        stage('Run Container') {
-            steps {
-                script {
-                    // Hapus container lama kalau ada
-                    sh "docker rm -f ${CONTAINER_NAME} || true"
-                    // Jalankan container baru
-                    sh "docker run -d -p ${PORT}:3000 --name ${CONTAINER_NAME} ${IMAGE_NAME}"
-                }
-            }
-        }
+    stage('Build') {
+      steps {
+        bat 'echo "Build di Windows"'
+      }
     }
-
-    post {
-        success {
-            echo "Build & Deploy Sukses! Akses di http://<jenkins-server-ip>:${PORT}"
-        }
-        failure {
-            echo "Build Gagal!"
-        }
+    stage('Build Docker Image') {
+      steps {
+        bat """docker build -t ${env.IMAGE_NAME}:${env.BUILD_NUMBER} ."""
+      }
     }
+    stage('Push Docker Image') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: env.REGISTRY_CREDENTIALS, usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+          bat """docker login -u %USER% -p %PASS%"""
+          bat """docker push ${env.IMAGE_NAME}:${env.BUILD_NUMBER}"""
+          bat """docker tag ${env.IMAGE_NAME}:${env.BUILD_NUMBER} ${env.IMAGE_NAME}:latest"""
+          bat """docker push ${env.IMAGE_NAME}:latest"""
+        }
+      }
+    }
+  }
 }
-
