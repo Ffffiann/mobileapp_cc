@@ -11,7 +11,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Ambil code dari git repository
-                git 'https://github.com/username/mobile-calculator.git'
+                git 'https://github.com/Ffffiann/mobileapp_cc.git'
             }
         }
 
@@ -44,3 +44,4 @@ pipeline {
         }
     }
 }
+
